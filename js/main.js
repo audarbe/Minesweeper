@@ -4,6 +4,7 @@ const difficultyLookup = {
     xAxis: 10,
     yAxis: 10,
     coronas: 10,
+    masks: 10,
     winAmount: this.xAxis * this.yAxis - this.coronas,
     color: "#9ACD32", //yellowgreen
   },
@@ -11,6 +12,7 @@ const difficultyLookup = {
     xAxis: 15,
     yAxis: 13,
     coronas: 40,
+    masks: 40,
     winAmount: this.xAxis * this.yAxis - this.coronas,
     color: "#FF8C00", //darkorange
   },
@@ -18,6 +20,7 @@ const difficultyLookup = {
     xAxis: 30,
     yAxis: 16,
     coronas: 99,
+    masks: 99,
     winAmount: this.xAxis * this.yAxis - this.coronas,
     color: "#FF4500", //orangered
   },
@@ -65,10 +68,13 @@ let board = [];
 /*----- cached element references -----*/
 
 
-
 /*----- event listeners -----*/
 $('#difficulty-selector').change(changeDifficulty);
 $('#reset').on('click', init);
+$('#corona-field').on("contextmenu", '.square', function () { return false });
+$('#corona-field').on('mousedown', '.square', function (event) {
+  if (event.which === 1 ? clickHandle(event) : maskSquare(event));
+});
 
 /*----- functions -----*/
 
@@ -95,9 +101,20 @@ function changeDifficulty() {
   init();
 }
 
+function clickHandle(event) {
+  let currentEl = event.target;
+  console.log(currentEl, '< current el')
+}
+
+function maskSquare(event) {
+  console.log('drop a mask on', event.target)
+}
+
+
 function render() {
   $('body').css('background-color', difficultyLookup[difficulty].color);
   $('#remaining-coronas').text(difficultyLookup[difficulty].coronas);
+  $('#remaining-masks').text(difficultyLookup[difficulty].masks);
 }
 
 init();

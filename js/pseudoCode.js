@@ -41,9 +41,9 @@
     // Body for background image changing
 
     // Establish any event listeners
-    // Create an event listener for our squares
+    ---> // Create an event listener for our squares
     // Will be used for our square actions and timer
-    // Also will invoke our handleClick function
+    ---> // Also will invoke our handleClick function
     ---> // Create an event listener for our difficulty selector
     // Create an event listener for our flag
     // button in nav
@@ -78,9 +78,7 @@
     // Add number of uncovered squares to our winner accumulator value.
 
 // Create our flagging function
-    // If the user clicks on our flag toggle
-        // Any clicks on a square element should place a image in the div of flag instead of checking for mines,
-        // When user clicks on a square that includes an image of the flag, remove the flag.
+        // right click allows the user to place a flag
 
 // Create our win-logic function
     // If the current index matches anything in our occupied mines array.
