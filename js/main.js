@@ -63,50 +63,41 @@ let currentScore;
 let board = [];
 
 /*----- cached element references -----*/
-const diffcultySelector = document.querySelector("#difficulty-selector");
-const emojiBox = document.querySelector("#emoji")
-const flagToggle = document.querySelector("#flag");
+
 
 
 /*----- event listeners -----*/
-document.querySelector("#difficulty-selector")
-  .addEventListener("change", changeDifficulty);
-
-document.querySelector("#reset")
-  .addEventListener("click", init);
+$('#difficulty-selector').change(changeDifficulty);
+$('#reset').on('click', init);
 
 /*----- functions -----*/
 
 function init() {
-
+  console.log('init');
   createBoard();
   render();
-}
+};
 
 function createBoard() { //refactor here
-  $('.corona-field > div').remove(); //clear board
-  for (let x = 0; x < difficultyLookup[difficulty].xAxis; x++) {
-    const newRow = document.createElement('div');
-    newRow.classList.add('row')
-    document.querySelector('#corona-field').appendChild(newRow).setAttribute('id', `row${x}`);
-    for (let y = 0; y < difficultyLookup[difficulty].yAxis; y++) {
-      const newSquare = document.createElement('div');
-      newSquare.classList.add('square')
-      document.querySelector(`#row${x}`).appendChild(newSquare).setAttribute('id', `c${x}r${y}`)
-    }
-  }
-}
+  $('.corona-field > div').remove();
+  for (let y = 0; y < difficultyLookup[difficulty].yAxis; y++) {
+    let newRow = $(`<div class="gameboard-row" id="row${y}"></div>`)
+    $('#corona-field').append(newRow);
+    for (let x = 0; x < difficultyLookup[difficulty].xAxis; x++) {
+      let squareEl = $(`<div class="square" id="c${x}r${y}"></div>`)
+      $(`#row${y}`).append(squareEl);
+    };
+  };
+};
 
 function changeDifficulty() {
-  difficulty = diffcultySelector.value;
+  difficulty = $('#difficulty-selector').val();
   init();
 }
 
 function render() {
-  document.querySelector("body").style.backgroundColor =
-    difficultyLookup[difficulty].color;
-  document.querySelector("#remaining-coronas").innerText =
-    difficultyLookup[difficulty].coronas;
+  $('body').css('background-color', difficultyLookup[difficulty].color);
+  $('#remaining-coronas').text(difficultyLookup[difficulty].coronas);
 }
 
 init();

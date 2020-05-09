@@ -4,59 +4,59 @@
 
 
 // Determine the constants for the game
-    ---> // Declare a variable with an object of difficulty levels and any objects we’ll need
-        ---> // Squares on x-axis
-        ---> // Squares on y-axis
-        ---> // Background color reference
-        ---> // Number of mines placed
-        ---> // Score needed to win
+---> // Declare a variable with an object of difficulty levels and any objects we’ll need
+    ---> // Squares on x-axis
+    ---> // Squares on y-axis
+    ---> // Background color reference
+    ---> // Number of mines placed
+    ---> // Score needed to win
     // Declare a object with the states of our squares
-        // Occupied by mines
-        ---> // color/Image reference
-            // We will use the index of the a square based on how our difficulty to occupy a square with a mine.
-            // Place the indexes into an array and assign to variable of mines.
-        ---> //Uncovered State
-        ---> // Color reference
+    // Occupied by mines
+    ---> // color/Image reference
+    // We will use the index of the a square based on how our difficulty to occupy a square with a mine.
+    // Place the indexes into an array and assign to variable of mines.
+    ---> //Uncovered State
+    ---> // Color reference
     ---> // Covered State
-        ---> /// Color reference
+    ---> /// Color reference
     ---> // Create an object for the different states of our emoji guy
-        ---> // Normal
-        ---> // Active
-        ---> // Lose
-        ---> // Win
+    ---> // Normal
+    ---> // Active
+    ---> // Lose
+    ---> // Win
     ---> //  Create an object for audio clips
-        ---> //  Uncover square
-            ---> //  Click
-            ---> //  Adjacent squares
-        ---> //  Game start
-        ---> //  Game reset
-        ---> //  Lose
-        ---> //  win
+    ---> //  Uncover square
+    ---> //  Click
+    ---> //  Adjacent squares
+    ---> //  Game start
+    ---> //  Game reset
+    ---> //  Lose
+    ---> //  win
     ---> // Instantiate our winner accumulator variable to zero.
     // Intantate our game board
     ---> //Instantiate difficulty
 
-// Create any cached element references
+    // Create any cached element references
     // Emoji element for our “messaging”
     // Body for background image changing
 
-// Establish any event listeners
+    // Establish any event listeners
     // Create an event listener for our squares
-        // Will be used for our square actions and timer
-        // Also will invoke our handleClick function
-   ---> // Create an event listener for our difficulty selector
+    // Will be used for our square actions and timer
+    // Also will invoke our handleClick function
+    ---> // Create an event listener for our difficulty selector
     // Create an event listener for our flag
-        // button in nav
-        // Right click on square
----> // Create an event listener for our reset button
+    // button in nav
+    // Right click on square
+    ---> // Create an event listener for our reset button
     // Create event listener for “cheat code”
-        // Sequence of keypresses
+    // Sequence of keypresses
 
-// Create our Initialization function
-    // Create our board
-        // Reference our difficulty object for our game board information
-        // Append elements to the DOM to create board
----> // Set difficulty to spicy (default)
+    // Create our Initialization function
+    ---> // Create our board
+    ---> // Reference our difficulty object for our game board information
+    ---> // Append elements to the DOM to create board
+    ---> // Set difficulty to spicy (default)
      // Reset our timer and and a click event to start
 
 // Create our handle click function
