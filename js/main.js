@@ -1,24 +1,24 @@
 /*----- constants -----*/
 const difficultyLookup = {
   outbreak: {
-    axisX: 10,
-    axisY: 10,
+    xAxis: 10,
+    yAxis: 10,
     coronas: 10,
-    winAmount: this.axisX * this.axisY - this.coronas,
+    winAmount: this.xAxis * this.yAxis - this.coronas,
     color: "#9ACD32", //yellowgreen
   },
   epidemic: {
-    axisX: 15,
-    axisY: 13,
+    xAxis: 15,
+    yAxis: 13,
     coronas: 40,
-    winAmount: this.axisX * this.axisY - this.coronas,
+    winAmount: this.xAxis * this.yAxis - this.coronas,
     color: "#FF8C00", //darkorange
   },
   pandemic: {
-    axisX: 30,
-    axisY: 16,
+    xAxis: 30,
+    yAxis: 16,
     coronas: 99,
-    winAmount: this.axisX * this.axisY - this.coronas,
+    winAmount: this.xAxis * this.yAxis - this.coronas,
     color: "#FF4500", //orangered
   },
 };
@@ -64,29 +64,42 @@ let board = [];
 
 /*----- cached element references -----*/
 const diffcultySelector = document.querySelector("#difficulty-selector");
-const remainingCoronas = document.querySelector("#remaining-coronas");
-const emojiBox = document.querySelector("#emoji");
-const timer = document.querySelector("#timer");
+const emojiBox = document.querySelector("#emoji")
 const flagToggle = document.querySelector("#flag");
-const resetButton = document.querySelector("#reset");
-const squareEls = Array.from(document.querySelectorAll("#coronaField > div"));
+
 
 /*----- event listeners -----*/
-diffcultySelector.addEventListener("change", changeDifficulty);
-resetButton.addEventListener("click", init);
+document.querySelector("#difficulty-selector")
+  .addEventListener("change", changeDifficulty);
+
+document.querySelector("#reset")
+  .addEventListener("click", init);
 
 /*----- functions -----*/
 
 function init() {
-  console.log("init");
+
+  createBoard();
   render();
 }
 
-function createBoard() {}
+function createBoard() { //refactor here
+  $('.corona-field > div').remove(); //clear board
+  for (let x = 0; x < difficultyLookup[difficulty].xAxis; x++) {
+    const newRow = document.createElement('div');
+    newRow.classList.add('row')
+    document.querySelector('#corona-field').appendChild(newRow).setAttribute('id', `row${x}`);
+    for (let y = 0; y < difficultyLookup[difficulty].yAxis; y++) {
+      const newSquare = document.createElement('div');
+      newSquare.classList.add('square')
+      document.querySelector(`#row${x}`).appendChild(newSquare).setAttribute('id', `c${x}r${y}`)
+    }
+  }
+}
 
 function changeDifficulty() {
   difficulty = diffcultySelector.value;
-  render();
+  init();
 }
 
 function render() {
