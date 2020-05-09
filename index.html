@@ -5,10 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="css/main.css">
-    <script src="js/main.js"></script>
+    <script defer src="js/main.js"></script>
     
 </head>
 <body> 
+<h1>Coronasweeper</h1>
+<hr>
+<div class="difficulty-selector-container">
+    <h2>Difficulty level</h2>
+    <select id="difficulty-selector">
+        <option value="outbreak">Outbreak</option>
+        <option value="epidemic" selected>Epidemic</option>
+        <option value="pandemic">Pandemic</option>
+    </select>
+</div>
+<hr>
+<div class="remaining-coronas-container">
+    <h2>Remaining coronas:</h2>
+    <p id="remaining-coronas">0</p>
+</div>
+<hr>
+<div class="emoji-container">
+    <img id="emoji" src="img/emoji_win.png" />
+</div>
+<hr>
+<div class="timer-container">
+    <h2>Timer</h2>
+    <p id="remaining-cells">0000</p>
+</div>
+<hr>
+<div class="flag-container">
+    <img id="flag" src="img/flag-icon.jpg" />
+</div>
+<hr>
+<div class="reset-container">
+    <img id="reset" src="img/reset-button.jpg" />
+</div>
+<hr>
+<div class="corona-container">
+    <h2>Gameboard</h2>
+    <div id="coronaField">
+        <div>1</div>
+        <div>2</div>
+        <div>3</div> 
+        <div>4</div>
+</div>
 
 </body>
 </html>

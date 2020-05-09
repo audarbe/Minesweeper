@@ -1,0 +1,8 @@
+.emoji-container > img {
+  width: 150px;
+}
+
+.flag-container > img,
+.reset-container > img {
+  width: 30px;
+}
