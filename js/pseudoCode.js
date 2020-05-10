@@ -45,10 +45,10 @@
     // Will be used for our square actions and timer
     ---> // Also will invoke our handleClick function
     ---> // Create an event listener for our difficulty selector
-    // Create an event listener for our flag
-    // button in nav
-    // Right click on square
-    ---> // Create an event listener for our reset button
+    ---> //Create an event listener for our flag
+    XX--// button in nav
+// Right click on square
+---> // Create an event listener for our reset button
     // Create event listener for “cheat code”
     // Sequence of keypresses
 
@@ -97,3 +97,12 @@
         // If argument is win, change emoji to sunglasses guy
         // If argument is active, change emoji to shocked guy
         // If argument is lose, change emoji to x-eyes guy
+
+
+// create random landmines function
+    //add isolate random squares    
+        //find random number along x-axis
+        //find random number along y-axis
+        //concatenate randX and randY to find ID of current square
+    //rapush random square to occupied array for later use
+    //

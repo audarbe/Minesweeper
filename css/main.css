@@ -26,3 +26,6 @@
   margin: 5px;
 }
 
+.occupied {
+  background-color: black;
+}

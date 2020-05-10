@@ -64,6 +64,7 @@ const audioEl = {
 let difficulty = "epidemic";
 let currentScore;
 let board = [];
+let occupiedSquares = [];
 
 /*----- cached element references -----*/
 
@@ -81,19 +82,36 @@ $('#corona-field').on('mousedown', '.square', function (event) {
 function init() {
   console.log('init');
   createBoard();
+  board = $('.square');
   render();
 };
 
 function createBoard() { //refactor here
+  //clear board
+  occupiedSquares = [];
   $('.corona-field > div').remove();
+  //set up grid
   for (let y = 0; y < difficultyLookup[difficulty].yAxis; y++) {
     let newRow = $(`<div class="gameboard-row" id="row${y}"></div>`)
     $('#corona-field').append(newRow);
     for (let x = 0; x < difficultyLookup[difficulty].xAxis; x++) {
-      let squareEl = $(`<div class="square" id="c${x}r${y}"></div>`)
-      $(`#row${y}`).append(squareEl);
+      let newSquare = $(`<div class="square" id="c${x}r${y}"></div>`)
+      $(`#row${y}`).append(newSquare);
     };
   };
+  plantCoronas();
+};
+
+function plantCoronas() {
+  while (occupiedSquares.length < difficultyLookup[difficulty].coronas) {
+    let xRan = Math.floor((Math.random() * (difficultyLookup[difficulty].xAxis - 0) + 0));
+    let yRan = Math.floor((Math.random() * (difficultyLookup[difficulty].yAxis - 0) + 0));
+    let $occupiedSquare = $(`#c${xRan}r${yRan}`);
+    if (!($occupiedSquare.hasClass('occupied'))) {
+      $occupiedSquare.addClass('occupied');
+      occupiedSquares.push($occupiedSquare);
+    };
+  }
 };
 
 function changeDifficulty() {
