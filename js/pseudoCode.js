@@ -49,15 +49,23 @@
     XX--// button in nav
 // Right click on square
 ---> // Create an event listener for our reset button
-    // Create event listener for “cheat code”
-    // Sequence of keypresses
+    ---> //  Create event listener for “cheat code”
+    XX// Sequence of keypresses
 
-    // Create our Initialization function
-    ---> // Create our board
+// Create our Initialization function
+---> // Create our board
     ---> // Reference our difficulty object for our game board information
     ---> // Append elements to the DOM to create board
     ---> // Set difficulty to spicy (default)
-     // Reset our timer and and a click event to start
+    // Reset our timer and and a click event to start
+
+
+    ---> // create random landmines function
+    ---> //add isolate random squares    
+    ---> //find random number along x-axis
+    ---> //ind random number along y-axis
+    ---> //oncatenate randX and randY to find ID of current square
+    ---> //push random square to occupied array for later use
 
 // Create our handle click function
     // If click on square
@@ -98,11 +106,3 @@
         // If argument is active, change emoji to shocked guy
         // If argument is lose, change emoji to x-eyes guy
 
-
-// create random landmines function
-    //add isolate random squares    
-        //find random number along x-axis
-        //find random number along y-axis
-        //concatenate randX and randY to find ID of current square
-    //rapush random square to occupied array for later use
-    //
