@@ -61,6 +61,7 @@ const audioEl = {
 };
 
 const proximityTest = [
+  [0, 0], // current cell
   [0, -1], // top  
   [1, -1], // top-right
   [1, 0], // right
@@ -108,7 +109,7 @@ function createBoard() { //refactor here
     let newRow = $(`<div class='gameboard-row' id='row${y}'></div>`)
     $('#corona-field').append(newRow);
     for (let x = 0; x < difficultyLookup[difficulty].xAxis; x++) {
-      let newSquare = $(`<div class='square' id='c${x}r${y}' col-id='${x}' row-id='${y}'></div>`)
+      let newSquare = $(`<div class='square covered' id='c${x}r${y}' col-id='${x}' row-id='${y}'></div>`)
       $(`#row${y}`).append(newSquare);
     };
   };
@@ -121,7 +122,7 @@ function plantCoronas() {
     let yRan = Math.floor((Math.random() * (difficultyLookup[difficulty].yAxis - 0) + 0));
     let $occupiedSquare = $(`#c${xRan}r${yRan}`);
     if (!($occupiedSquare.hasClass('occupied'))) {
-      $occupiedSquare.addClass('occupied');
+      $occupiedSquare.addClass('occupied').removeClass('covered');
       occupiedSquares.push($occupiedSquare);
     };      
   }
@@ -153,31 +154,25 @@ function checkSquares() {
 }
 
 function uncoverSquare() {
-$(currentEl).css('background-color', 'yellow').addClass('uncovered');
-
-
-proximityTest.forEach(function(coord) {
   let currentColId = parseInt($(currentEl).attr('col-id'));
   let currentRowId = parseInt($(currentEl).attr('row-id'));
-  let proxTest = $(`.square[col-id='${currentColId + coord[0]}'][row-id='${currentRowId + coord[1]}']`)
-  if ($(proxTest).hasClass('occupied')) {
-    console.log('proximity warning')
-  } else {
-    proxTest.css('background-color', 'yellow')
-    score += 1;
-  }
-});
 
+  // test around starts here
+    proximityTest.forEach(function(coord) {
+    proxTest = $(`.square[col-id='${currentColId + coord[0]}'][row-id='${currentRowId + coord[1]}']`)
+    if ($(proxTest).hasClass('covered')) {
+      $(proxTest).addClass('uncovered').removeClass('covered').css('background-color', squareEl['uncovered'].color);
+      score += 1;
+    } else if ($(proxTest).hasClass('occupied')) {
+      console.log('occupied alert')
+    } else {
+      console.log('uncovered alert')
+    };
+  });
+  // end test run
 
-
-
-
-
-
-
-}
-
-
+  console.log(score)
+};
 
 function toggleMask() {
   console.log('right click on currentEl', currentEl)
@@ -192,5 +187,6 @@ function render() {
   $('#remaining-coronas').text(difficultyLookup[difficulty].coronas);
   $('#remaining-masks').text(difficultyLookup[difficulty].masks);
 }
+
 
 init();
