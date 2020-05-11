@@ -60,8 +60,8 @@ const audioEl = {
   win: '',
 };
 
-const proximityTest = [
-  [0, 0], // current cell
+const proximity = [
+  // [0, 0], // current cell
   [0, -1], // top  
   [1, -1], // top-right
   [1, 0], // right
@@ -79,6 +79,7 @@ let board;
 let occupiedSquares;
 let currentEl;
 let score;
+let timer;
 
 /*----- cached element references -----*/
 
@@ -109,7 +110,7 @@ function createBoard() { //refactor here
     let newRow = $(`<div class='gameboard-row' id='row${y}'></div>`)
     $('#corona-field').append(newRow);
     for (let x = 0; x < difficultyLookup[difficulty].xAxis; x++) {
-      let newSquare = $(`<div class='square covered' id='c${x}r${y}' col-id='${x}' row-id='${y}'></div>`)
+      let newSquare = $(`<div class='square covered' id='c${x}r${y}' col-id='${x}' row-id='${y}'><p class='prox-test'>0</p></div>`)
       $(`#row${y}`).append(newSquare);
     };
   };
@@ -122,10 +123,25 @@ function plantCoronas() {
     let yRan = Math.floor((Math.random() * (difficultyLookup[difficulty].yAxis - 0) + 0));
     let $occupiedSquare = $(`#c${xRan}r${yRan}`);
     if (!($occupiedSquare.hasClass('occupied'))) {
-      $occupiedSquare.addClass('occupied').removeClass('covered');
+      $occupiedSquare.addClass('occupied').addClass('cheat').removeClass('covered');
       occupiedSquares.push($occupiedSquare);
     };      
   }
+  addNumbers()
+};
+
+function addNumbers() {
+  proximity.forEach(function(coord) {
+    occupiedSquares.forEach(function(rona) {
+      let colId = parseInt($(rona).attr('col-id'));
+      let rowId = parseInt($(rona).attr('row-id'));
+      prox = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
+      let currentVal = parseInt($(prox).text()); 
+        if (!($(prox).hasClass('occupied'))) {
+          $(prox).text(`${currentVal += 1}`);
+        };
+    });
+  });
 };
 
 function clickHandle(event) {
@@ -136,15 +152,16 @@ function clickHandle(event) {
 
 
 function checkSquares() {
-  // console.log('left click on currentEl', currentEl) //for currentEl testing
   if ($(currentEl).hasClass('occupied')) {
     console.log('occupied');
+    stopTimer();
   } else {
-    uncoverSquare(event);
+    uncoverSquare();
+    startTimer();
   } 
   
 
-/* GET THIS TO WORK LATER (USE JAVASCRIPT!!!)
+/* GET THIS TO WORK LATER
  let isCellOccupied = occupiedSquares.some(function(el) {
     console.log($(el) === currentEl)
     // return el === currentEl;
@@ -154,25 +171,33 @@ function checkSquares() {
 }
 
 function uncoverSquare() {
-  let currentColId = parseInt($(currentEl).attr('col-id'));
-  let currentRowId = parseInt($(currentEl).attr('row-id'));
-
+  let colId = parseInt($(currentEl).attr('col-id'));
+  let rowId = parseInt($(currentEl).attr('row-id'));
   // test around starts here
-    proximityTest.forEach(function(coord) {
-    proxTest = $(`.square[col-id='${currentColId + coord[0]}'][row-id='${currentRowId + coord[1]}']`)
-    if ($(proxTest).hasClass('covered')) {
-      $(proxTest).addClass('uncovered').removeClass('covered').css('background-color', squareEl['uncovered'].color);
-      score += 1;
-    } else if ($(proxTest).hasClass('occupied')) {
-      console.log('occupied alert')
-    } else {
-      console.log('uncovered alert')
-    };
+  proximity.forEach(function(coord) {
+    currentEl = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
+        if ($(currentEl).hasClass('covered')) {
+          $(currentEl).addClass('uncovered').removeClass('covered');
+          score += 1;
+        } else if ($(currentEl).hasClass('occupied')) {
+          console.log('occupied alert')
+        } else {
+          // console.log('uncovered alert')
+        };      
   });
-  // end test run
-
-  console.log(score)
 };
+
+function startTimer() {
+  var seconds = document.getElementById("timer").textContent;
+  timer = setInterval(function() {
+    seconds++;
+    document.getElementById("timer").textContent = seconds;
+  }, 1000);
+}
+
+function stopTimer() { //get this stop timer to work
+  clearInterval(timer);
+}
 
 function toggleMask() {
   console.log('right click on currentEl', currentEl)
@@ -186,6 +211,7 @@ function render() {
   $('body').css('background-color', difficultyLookup[difficulty].color);
   $('#remaining-coronas').text(difficultyLookup[difficulty].coronas);
   $('#remaining-masks').text(difficultyLookup[difficulty].masks);
+  $('.square > p:contains("0")').hide();
 }
 
 

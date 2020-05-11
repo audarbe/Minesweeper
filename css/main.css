@@ -20,6 +20,9 @@
 }
 
 .square {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: white;
   width: 30px;
   height: 30px;
@@ -29,4 +32,8 @@
 .cheat {
   background: url("../img/corona_icon.png") no-repeat center / contain;
   background-color: white;
+}
+
+.uncovered {
+  background-color: lightgray;
 }
