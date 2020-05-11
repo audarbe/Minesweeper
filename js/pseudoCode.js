@@ -106,3 +106,14 @@
         // If argument is active, change emoji to shocked guy
         // If argument is lose, change emoji to x-eyes guy
 
+
+
+ //check to see if this square has a corona
+    //if occupied
+      //game ends
+    //otherwise
+      // if current cell is unoccupied
+        //uncover current square
+        // while id is less than the bewtween the max bounds, 
+          //check the proximity of adjacent squares to see if it's occupied
+            //uncover any squares that are unoccupied
