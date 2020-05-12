@@ -61,6 +61,7 @@ const audioEl = {
 };
 
 const proximity = [
+  // [0, 0], // current cell
   [0, -1], // top  
   [1, -1], // top-right
   [1, 0], // right
@@ -69,7 +70,7 @@ const proximity = [
   [-1, 1], //bottom-left
   [-1, 0], // left
   [-1, -1], //top-left
-  [0, 0] // current cell
+  
 ]
 
 /*----- app's state (variables) -----*/
@@ -111,7 +112,7 @@ function createBoard() { //refactor here
     let newRow = $(`<div class='gameboard-row' id='row${y}'></div>`)
     $('#corona-field').append(newRow);
     for (let x = 0; x < difficultyLookup[difficulty].xAxis; x++) {
-      let newSquare = $(`<div class='square covered' id='c${x}r${y}' col-id='${x}' row-id='${y}'><p class='prox-test'>0</p></div>`)
+      let newSquare = $(`<div class='square covered' id='c${x}r${y}' col-id='${x}' row-id='${y}'><p class='prox-text'>0</p></div>`)
       $(`#row${y}`).append(newSquare);
     };
   };
@@ -124,11 +125,11 @@ function plantCoronas() {
     let yRan = Math.floor((Math.random() * (difficultyLookup[difficulty].yAxis - 0) + 0));
     let $occupiedSquare = $(`#c${xRan}r${yRan}`);
     if (!($occupiedSquare.hasClass('occupied'))) {
-      $occupiedSquare.addClass('occupied').addClass('cheat').removeClass('covered');
+      $occupiedSquare.addClass('occupied').removeClass('covered');
       occupiedSquares.push($occupiedSquare);
     };      
   }
-  addNumbers()
+  addNumbers();
 };
 
 function addNumbers() {
@@ -139,7 +140,7 @@ function addNumbers() {
       prox = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
       let currentVal = parseInt($(prox).text()); 
         if (!($(prox).hasClass('occupied'))) {
-          $(prox).text(`${currentVal += 1}`).addClass('proxCell');
+          $(prox).text(`${currentVal += 1}`).addClass('proxCell').css('color', 'white');
         };
     });
   });
@@ -163,37 +164,41 @@ function checkSquares() {
 }
 //linear solve
 function uncoverSquare() {
+  if ($(currentEl).hasClass('covered') || ($(currentEl).hasClass('proxCell'))) {
+    $(currentEl).addClass('uncovered').removeClass('covered').css('color', 'black');
+      score += 1;
+  };
+
   let colId = parseInt($(currentEl).attr('col-id'));
   let rowId = parseInt($(currentEl).attr('row-id'));
-
 //right-up
-  for (let t = rowId; t > 0; t--) {
+  for (let t = rowId; t >= 0; t--) {
     if ($(`.square[col-id='${colId}'][row-id='${t}']`).hasClass('proxCell')) break;
-    for (let r = colId; r < difficultyLookup[difficulty].xAxis; r++) {
+    for (let r = colId; r <= difficultyLookup[difficulty].xAxis; r++) {
       if ($(`.square[col-id='${r}'][row-id='${t}']`).hasClass('proxCell')) break;
       checkProximity(r, t);
     }
   }
 //right-down
-  for (let r = colId; r < difficultyLookup[difficulty].xAxis; r++) {
+  for (let r = colId; r <= difficultyLookup[difficulty].xAxis; r++) {
     if ($(`.square[col-id='${r}'][row-id='${rowId}']`).hasClass('proxCell')) break;
-    for (let b = rowId; b < difficultyLookup[difficulty].yAxis; b++) {
+    for (let b = rowId; b <= difficultyLookup[difficulty].yAxis; b++) {
       if ($(`.square[col-id='${r}'][row-id='${b}']`).hasClass('proxCell')) break;
       checkProximity(r, b);
     }
   }
 //left-down
-  for (let l = colId; l > 0; l--) {
+  for (let l = colId; l >= 0; l--) {
     if ($(`.square[col-id='${l}'][row-id='${rowId}']`).hasClass('proxCell')) break;
-    for (let b = rowId; b < difficultyLookup[difficulty].yAxis; b++) {
+    for (let b = rowId; b <= difficultyLookup[difficulty].yAxis; b++) {
       if ($(`.square[col-id='${l}'][row-id='${b}']`).hasClass('proxCell')) break;
       checkProximity(l, b);
     }
   }   
 //left-top
-  for (let l = colId; l > 0; l--) {
+  for (let l = colId; l >= 0; l--) {
     if ($(`.square[col-id='${l}'][row-id='${rowId}']`).hasClass('proxCell')) break;
-    for (let t = rowId; t > 0; t--) {
+    for (let t = rowId; t >= 0; t--) {
       if ($(`.square[col-id='${l}'][row-id='${t}']`).hasClass('proxCell')) break;
       checkProximity(l, t);
     }
@@ -204,35 +209,11 @@ function checkProximity(colId, rowId) {
   proximity.forEach(function(coord) {
     checkProx = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
     if ($(checkProx).hasClass('covered') || ($(checkProx).hasClass('proxCell'))) {
-      $(checkProx).addClass('uncovered').removeClass('covered');
+      $(checkProx).addClass('uncovered').removeClass('covered').css('color', 'black');
         score += 1;
-      } else if ($(checkProx).hasClass('occupied')) {
-        console.log('occupied alert')
       };
   });
 };
-
-
-
-// && (!$(checkProx).hasClass('proxCell'))) 
-
-
-
-// function uncoverSquare() {
-//   let colId = parseInt($(currentEl).attr('col-id'));
-//   let rowId = parseInt($(currentEl).attr('row-id'));
-//   proximity.forEach(function(coord) {
-//     currentEl = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
-//         if ($(currentEl).hasClass('covered')) {
-//           $(currentEl).addClass('uncovered').removeClass('covered');
-//           score += 1;
-//           console.log('score', score)
-//         } else if ($(currentEl).hasClass('occupied')) {
-//           console.log('occupied alert')
-//         } else {
-//         };
-//   });
-// };
 
 function startTimer() {
   var seconds = document.getElementById("timer").textContent;
@@ -251,7 +232,10 @@ function toggleMask() {
 }
 
 function gameCheat(event) {
-  if (event.which === 192) $('.occupied').toggleClass('cheat');
+  if (event.which === 192) {
+    $('.occupied').toggleClass('cheat');
+    $('.proxCell').toggleClass('prox-cheat');
+  }   
 }
 
 function render() {
@@ -260,6 +244,5 @@ function render() {
   $('#remaining-masks').text(difficultyLookup[difficulty].masks);
   $('.square > p:contains("0")').hide();
 }
-
 
 init();
