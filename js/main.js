@@ -4,7 +4,6 @@ const difficultyLookup = {
     xAxis: 10,
     yAxis: 10,
     coronas: 10,
-    masks: 10,
     get winAmount() { return this.xAxis * this.yAxis - this.coronas },
     color: '#9ACD32', //yellowgreen
   },
@@ -12,7 +11,6 @@ const difficultyLookup = {
     xAxis: 15,
     yAxis: 13,
     coronas: 40,
-    masks: 40,
     get winAmount() { return this.xAxis * this.yAxis - this.coronas },
     color: '#FF8C00', //darkorange
   },
@@ -20,7 +18,6 @@ const difficultyLookup = {
     xAxis: 30,
     yAxis: 16,
     coronas: 99,
-    masks: 99,
     get winAmount() { return this.xAxis * this.yAxis - this.coronas },
     color: '#FF4500', //orangered
   },
@@ -78,7 +75,6 @@ let board;
 let occupiedSquares;
 let currentEl;
 let score;
-let timer;
 
 /*----- cached element references -----*/
 let unoccupied = $('.square > p:contains("0")');
@@ -93,17 +89,14 @@ $(window).on('keydown', gameCheat);
 /*----- functions -----*/
 
 function init() {
-  console.log('init');
   score = 0;
   stopTimer();
   difficulty = $('#difficulty-selector').val();
-  $('#emoji').attr('src', emoji['idle'])
   createBoard();
-  board = $('.square');
   render();
 };
 
-function createBoard() { //refactor here
+function createBoard() { //refactor here/change <p> to data vals
   //clear board
   occupiedSquares = [];
   $('.corona-field > div').remove();
@@ -116,6 +109,7 @@ function createBoard() { //refactor here
       $(`#row${y}`).append(newSquare);
     };
   };
+  board = $('.square');
   plantCoronas();
 };
 
@@ -132,7 +126,7 @@ function plantCoronas() {
   addNumbers();
 };
 
-function addNumbers() {
+function addNumbers() { //change the text to data vals
   proximity.forEach(function(coord) {
     occupiedSquares.forEach(function(occupiedSquare) {
       let colId = parseInt($(occupiedSquare).attr('col-id'));
@@ -158,12 +152,12 @@ function clickHandle(event) {
       break;
     default:
       if ($(currentEl).hasClass('occupied')) {
-        gameOver();
+        score = -1;
+        render();
       } else {
           if (score === 0) {
             uncoverSquare();
             startTimer();
-            $('#emoji').attr('src', emoji['inPlay'])
           } else {
             uncoverSquare();
           }
@@ -174,12 +168,12 @@ function clickHandle(event) {
 
 function uncoverSquare() {
   if ($(currentEl).hasClass('covered')) {
-    $(currentEl).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('questioin-mark').css('color', 'black');
+    $(currentEl).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('question-mark').css('color', 'black');
   };
   flood();
 };
 
-function flood() {
+function flood() { //fix logic and refactor
   let colId = parseInt($(currentEl).attr('col-id'));
   let rowId = parseInt($(currentEl).attr('row-id'));
 //right-up
@@ -223,20 +217,20 @@ function checkProximity(colId, rowId) {
   proximity.forEach(function(coord) {
     checkProx = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
     if ($(checkProx).hasClass('covered')) {
-      $(checkProx).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('questioin-mark').css('color', 'black');
+      $(checkProx).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('question-mark').css('color', 'black');
       };
   });
 };
 
-function startTimer() {
-  var seconds = document.getElementById("timer").textContent;
+function startTimer() { //dom stuff to render()
+  var seconds = 0;
   timer = setInterval(function() {
     seconds++;
     document.getElementById("timer").textContent = seconds;
   }, 1000);
 }
 
-function stopTimer() { //get this stop timer to work
+function stopTimer() {
   clearInterval(timer);
   document.getElementById("timer").textContent = 0;
 }
@@ -260,22 +254,28 @@ function gameCheat(event) {
   }   
 }
 
-function gameOver() {
-  console.log('Game Over')
-  $('.occupied').toggleClass('cheat');
-  $('#emoji').attr('src', emoji['lose'])
-  stopTimer();
-}
-
 function render() {
-  if (score === difficultyLookup[difficulty].winAmount) {
-    $('#emoji').attr('src', emoji['win'])
-    console.log('winner')
+  switch (score) {
+    case difficultyLookup[difficulty].winAmount:
+      $('#emoji').attr('src', emoji['win'])
+      stopTimer();
+      break;
+    case -1:
+      console.log('Game Over')
+      $('.occupied').toggleClass('cheat');
+      $('#emoji').attr('src', emoji['lose'])
+      stopTimer();
+      break;
+    case 0:
+      $('#emoji').attr('src', emoji['idle'])
+      break;
+    default:
+      $('#emoji').attr('src', emoji['inPlay'])
+      break;
   }
   $('body').css('background-color', difficultyLookup[difficulty].color);
   $('#remaining-coronas').text(difficultyLookup[difficulty].coronas);
-  $('#remaining-masks').text(difficultyLookup[difficulty].masks);
-  $('.square > p:contains("0")').hide();
+  $('.square > p:contains("0")').hide(); //can get rid of this when <p> is changed to data
 }
 
 init();
