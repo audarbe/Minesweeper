@@ -47,12 +47,17 @@ const squareEl = {
     image: 'img/mask.png',
     audio: '',
   },
+  questionMark: {
+    color: 'yellow',
+    image: 'img/question-mark.png',
+    audio: '',
+  },
 };
 
 const emoji = {
-  inPlay: 'img/ejoji_inPlay.png',
-  click: 'img/emoji_active.png',
-  lose: 'img/ejoji_lose.png',
+  idle: "img/emoji_idle.png",
+  inPlay: 'img/emoji_active.png',
+  lose: 'img/emoji_lose.png',
   win: 'img/emoji_win.png',
 };
 
@@ -69,7 +74,6 @@ const proximity = [
 
 /*----- app's state (variables) -----*/
 let difficulty;
-let currentScore; // check this
 let board;
 let occupiedSquares;
 let currentEl;
@@ -93,6 +97,7 @@ function init() {
   score = 0;
   stopTimer();
   difficulty = $('#difficulty-selector').val();
+  $('#emoji').attr('src', emoji['idle'])
   createBoard();
   board = $('.square');
   render();
@@ -143,6 +148,7 @@ function addNumbers() {
 
 function clickHandle(event) {
   currentEl = $(event.target);
+  if (score === difficultyLookup[difficulty].winAmount) return;
   switch (event.which) {
     case 3:
       toggleMask();
@@ -152,22 +158,23 @@ function clickHandle(event) {
       break;
     default:
       if ($(currentEl).hasClass('occupied')) {
-        console.log('game lose');
-        stopTimer();
+        gameOver();
       } else {
-        uncoverSquare();
-        startTimer();
+          if (score === 0) {
+            uncoverSquare();
+            startTimer();
+            $('#emoji').attr('src', emoji['inPlay'])
+          } else {
+            uncoverSquare();
+          }
       } 
       break;
     }
 }
 
-//linear solve
 function uncoverSquare() {
-  if ($(currentEl).hasClass('covered') || ($(currentEl).hasClass('proxCell'))) {
+  if ($(currentEl).hasClass('covered')) {
     $(currentEl).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('questioin-mark').css('color', 'black');
-      score += 1;
-      console.log(score)
   };
   flood();
 };
@@ -207,6 +214,9 @@ function flood() {
       checkProximity(l, t);
     }
   }
+  score = $('.uncovered').length;
+  console.log(score)
+  render();
 };
 
 function checkProximity(colId, rowId) {
@@ -214,9 +224,8 @@ function checkProximity(colId, rowId) {
     checkProx = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
     if ($(checkProx).hasClass('covered')) {
       $(checkProx).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('questioin-mark').css('color', 'black');
-        score += 1;
       };
-  });``
+  });
 };
 
 function startTimer() {
@@ -229,21 +238,20 @@ function startTimer() {
 
 function stopTimer() { //get this stop timer to work
   clearInterval(timer);
+  document.getElementById("timer").textContent = 0;
 }
 
 function toggleQuestionMark() {
-  if (!($(currentEl).hasClass('uncovered')) && (!($(currentEl).hasClass('flagged')))) {
+  if (!($(currentEl).hasClass('uncovered')) && (!($(currentEl).hasClass('flagged'))) && (!($(currentEl).hasClass('occupied')))) {
     $(currentEl).toggleClass('question-mark');
   }
 }
 
 function toggleMask() {
-  if (!($(currentEl).hasClass('uncovered')) && (!($(currentEl).hasClass('question-mark')))) {
+  if (!($(currentEl).hasClass('uncovered')) && (!($(currentEl).hasClass('question-mark'))) && (!($(currentEl).hasClass('occupied')))) {
     $(currentEl).toggleClass('flagged');
   }
 };
-
-
 
 function gameCheat(event) {
   if (event.which === 192) {
@@ -252,14 +260,22 @@ function gameCheat(event) {
   }   
 }
 
+function gameOver() {
+  console.log('Game Over')
+  $('.occupied').toggleClass('cheat');
+  $('#emoji').attr('src', emoji['lose'])
+  stopTimer();
+}
+
 function render() {
+  if (score === difficultyLookup[difficulty].winAmount) {
+    $('#emoji').attr('src', emoji['win'])
+    console.log('winner')
+  }
   $('body').css('background-color', difficultyLookup[difficulty].color);
   $('#remaining-coronas').text(difficultyLookup[difficulty].coronas);
   $('#remaining-masks').text(difficultyLookup[difficulty].masks);
   $('.square > p:contains("0")').hide();
-  if (score === difficultyLookup[difficulty].winAmount) {
-    console.log('winner')
-  }
 }
 
 init();
