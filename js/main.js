@@ -61,7 +61,7 @@ const audioEl = {
 };
 
 const proximity = [
-  // [0, 0], // current cell
+  [0, 0], // current cell
   [0, -1], // top  
   [1, -1], // top-right
   [1, 0], // right
@@ -82,7 +82,7 @@ let score;
 let timer;
 
 /*----- cached element references -----*/
-
+let unoccupied = $('.square > p:contains("0")');
 
 /*----- event listeners -----*/
 $('#difficulty-selector').change(init);
@@ -95,6 +95,7 @@ $(window).on('keydown', gameCheat);
 function init() {
   console.log('init');
   score = 0;
+  stopTimer();
   difficulty = $('#difficulty-selector').val();
   createBoard();
   board = $('.square');
@@ -159,21 +160,11 @@ function checkSquares() {
     uncoverSquare();
     startTimer();
   } 
-  
-
-/* GET THIS TO WORK LATER
- let isCellOccupied = occupiedSquares.some(function(el) {
-    console.log($(el) === currentEl)
-    // return el === currentEl;
-  });
- if (isCellOccupied ? console.log('cell occupied') : console.log('cell unoccupied'));
-*/
 }
 
 function uncoverSquare() {
   let colId = parseInt($(currentEl).attr('col-id'));
   let rowId = parseInt($(currentEl).attr('row-id'));
-  // test around starts here
   proximity.forEach(function(coord) {
     currentEl = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
         if ($(currentEl).hasClass('covered')) {
@@ -182,8 +173,7 @@ function uncoverSquare() {
         } else if ($(currentEl).hasClass('occupied')) {
           console.log('occupied alert')
         } else {
-          // console.log('uncovered alert')
-        };      
+        };
   });
 };
 
