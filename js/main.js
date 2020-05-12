@@ -61,7 +61,6 @@ const audioEl = {
 };
 
 const proximity = [
-  [0, 0], // current cell
   [0, -1], // top  
   [1, -1], // top-right
   [1, 0], // right
@@ -69,7 +68,8 @@ const proximity = [
   [0, 1], //bottom
   [-1, 1], //bottom-left
   [-1, 0], // left
-  [-1, -1] //top-left
+  [-1, -1], //top-left
+  [0, 0] // current cell
 ]
 
 /*----- app's state (variables) -----*/
@@ -133,13 +133,13 @@ function plantCoronas() {
 
 function addNumbers() {
   proximity.forEach(function(coord) {
-    occupiedSquares.forEach(function(rona) {
-      let colId = parseInt($(rona).attr('col-id'));
-      let rowId = parseInt($(rona).attr('row-id'));
+    occupiedSquares.forEach(function(occupiedSquare) {
+      let colId = parseInt($(occupiedSquare).attr('col-id'));
+      let rowId = parseInt($(occupiedSquare).attr('row-id'));
       prox = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
       let currentVal = parseInt($(prox).text()); 
         if (!($(prox).hasClass('occupied'))) {
-          $(prox).text(`${currentVal += 1}`);
+          $(prox).text(`${currentVal += 1}`).addClass('proxCell');
         };
     });
   });
@@ -161,21 +161,78 @@ function checkSquares() {
     startTimer();
   } 
 }
-
+//linear solve
 function uncoverSquare() {
   let colId = parseInt($(currentEl).attr('col-id'));
   let rowId = parseInt($(currentEl).attr('row-id'));
+
+//right-up
+  for (let t = rowId; t > 0; t--) {
+    if ($(`.square[col-id='${colId}'][row-id='${t}']`).hasClass('proxCell')) break;
+    for (let r = colId; r < difficultyLookup[difficulty].xAxis; r++) {
+      if ($(`.square[col-id='${r}'][row-id='${t}']`).hasClass('proxCell')) break;
+      checkProximity(r, t);
+    }
+  }
+//right-down
+  for (let r = colId; r < difficultyLookup[difficulty].xAxis; r++) {
+    if ($(`.square[col-id='${r}'][row-id='${rowId}']`).hasClass('proxCell')) break;
+    for (let b = rowId; b < difficultyLookup[difficulty].yAxis; b++) {
+      if ($(`.square[col-id='${r}'][row-id='${b}']`).hasClass('proxCell')) break;
+      checkProximity(r, b);
+    }
+  }
+//left-down
+  for (let l = colId; l > 0; l--) {
+    if ($(`.square[col-id='${l}'][row-id='${rowId}']`).hasClass('proxCell')) break;
+    for (let b = rowId; b < difficultyLookup[difficulty].yAxis; b++) {
+      if ($(`.square[col-id='${l}'][row-id='${b}']`).hasClass('proxCell')) break;
+      checkProximity(l, b);
+    }
+  }   
+//left-top
+  for (let l = colId; l > 0; l--) {
+    if ($(`.square[col-id='${l}'][row-id='${rowId}']`).hasClass('proxCell')) break;
+    for (let t = rowId; t > 0; t--) {
+      if ($(`.square[col-id='${l}'][row-id='${t}']`).hasClass('proxCell')) break;
+      checkProximity(l, t);
+    }
+  }
+};
+
+function checkProximity(colId, rowId) {
   proximity.forEach(function(coord) {
-    currentEl = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
-        if ($(currentEl).hasClass('covered')) {
-          $(currentEl).addClass('uncovered').removeClass('covered');
-          score += 1;
-        } else if ($(currentEl).hasClass('occupied')) {
-          console.log('occupied alert')
-        } else {
-        };
+    checkProx = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
+    if ($(checkProx).hasClass('covered') || ($(checkProx).hasClass('proxCell'))) {
+      $(checkProx).addClass('uncovered').removeClass('covered');
+        score += 1;
+      } else if ($(checkProx).hasClass('occupied')) {
+        console.log('occupied alert')
+      };
   });
 };
+
+
+
+// && (!$(checkProx).hasClass('proxCell'))) 
+
+
+
+// function uncoverSquare() {
+//   let colId = parseInt($(currentEl).attr('col-id'));
+//   let rowId = parseInt($(currentEl).attr('row-id'));
+//   proximity.forEach(function(coord) {
+//     currentEl = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
+//         if ($(currentEl).hasClass('covered')) {
+//           $(currentEl).addClass('uncovered').removeClass('covered');
+//           score += 1;
+//           console.log('score', score)
+//         } else if ($(currentEl).hasClass('occupied')) {
+//           console.log('occupied alert')
+//         } else {
+//         };
+//   });
+// };
 
 function startTimer() {
   var seconds = document.getElementById("timer").textContent;
