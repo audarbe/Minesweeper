@@ -76,6 +76,11 @@
     // When game starts, change the emoji guy to our ‘normal’ state to render
     // When user clicks on an square, send active state to render function
 
+// Distribute mines on first click?
+
+// Add Double-click functionaltiy
+    //add question mark
+
 // Create uncoversquares function
     // Check to see if adjacent squares are empty (check in the following pattern:
             // Top, top-right, right, bottom-right, bottom, bottom-left, left, top-left

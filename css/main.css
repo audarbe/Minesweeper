@@ -41,3 +41,19 @@
 .uncovered {
   background-color: lightgray;
 }
+
+.corona-container img{
+  width:30px;
+}
+
+.flagged {
+  background: url("../img/mask.png") no-repeat center / contain;
+  background-color: white;
+  color: transparent;
+}
+
+.question-mark {
+  background: url("../img/question-mark.png") no-repeat center / contain;
+  background-color: white;
+  color: transparent;
+}

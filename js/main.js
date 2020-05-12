@@ -5,7 +5,7 @@ const difficultyLookup = {
     yAxis: 10,
     coronas: 10,
     masks: 10,
-    winAmount: this.xAxis * this.yAxis - this.coronas,
+    get winAmount() { return this.xAxis * this.yAxis - this.coronas },
     color: '#9ACD32', //yellowgreen
   },
   epidemic: {
@@ -13,7 +13,7 @@ const difficultyLookup = {
     yAxis: 13,
     coronas: 40,
     masks: 40,
-    winAmount: this.xAxis * this.yAxis - this.coronas,
+    get winAmount() { return this.xAxis * this.yAxis - this.coronas },
     color: '#FF8C00', //darkorange
   },
   pandemic: {
@@ -21,7 +21,7 @@ const difficultyLookup = {
     yAxis: 16,
     coronas: 99,
     masks: 99,
-    winAmount: this.xAxis * this.yAxis - this.coronas,
+    get winAmount() { return this.xAxis * this.yAxis - this.coronas },
     color: '#FF4500', //orangered
   },
 };
@@ -29,19 +29,23 @@ const difficultyLookup = {
 const squareEl = {
   occupied: {
     color: 'red',
-    image: 'img/corona_icon.png', // use background instead
+    image: 'img/corona_icon.png',
+    audio: '',
   },
   uncovered: {
     color: 'lightgray',
     image: '',
+    audio: '',
   },
   available: {
     color: 'green',
     image: '',
+    audio: '',
   },
   flagged: {
     color: 'yellow',
-    image: '',
+    image: 'img/mask.png',
+    audio: '',
   },
 };
 
@@ -52,16 +56,7 @@ const emoji = {
   win: 'img/emoji_win.png',
 };
 
-const audioEl = {
-  flagged: '',
-  uncover: '',
-  start: '',
-  lose: '',
-  win: '',
-};
-
 const proximity = [
-  // [0, 0], // current cell
   [0, -1], // top  
   [1, -1], // top-right
   [1, 0], // right
@@ -70,12 +65,11 @@ const proximity = [
   [-1, 1], //bottom-left
   [-1, 0], // left
   [-1, -1], //top-left
-  
 ]
 
 /*----- app's state (variables) -----*/
 let difficulty;
-let currentScore;
+let currentScore; // check this
 let board;
 let occupiedSquares;
 let currentEl;
@@ -89,6 +83,7 @@ let unoccupied = $('.square > p:contains("0")');
 $('#difficulty-selector').change(init);
 $('#reset').on('click', init);
 $('#corona-field').on('mousedown', '.square', clickHandle);
+$('#corona-field').on('contextmenu', '.square', function () { return false });
 $(window).on('keydown', gameCheat);
 
 /*----- functions -----*/
@@ -148,34 +143,43 @@ function addNumbers() {
 
 function clickHandle(event) {
   currentEl = $(event.target);
-  $('#corona-field').on('contextmenu', '.square', function () { return false }); //consider this a DOM event? or rewrite in JS
-  if (event.which === 1 ? checkSquares() : toggleMask());
+  switch (event.which) {
+    case 3:
+      toggleMask();
+      break;
+    case 2:
+      toggleQuestionMark();
+      break;
+    default:
+      if ($(currentEl).hasClass('occupied')) {
+        console.log('game lose');
+        stopTimer();
+      } else {
+        uncoverSquare();
+        startTimer();
+      } 
+      break;
+    }
 }
 
-
-function checkSquares() {
-  if ($(currentEl).hasClass('occupied')) {
-    console.log('occupied');
-    stopTimer();
-  } else {
-    uncoverSquare();
-    startTimer();
-  } 
-}
 //linear solve
 function uncoverSquare() {
   if ($(currentEl).hasClass('covered') || ($(currentEl).hasClass('proxCell'))) {
-    $(currentEl).addClass('uncovered').removeClass('covered').css('color', 'black');
+    $(currentEl).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('questioin-mark').css('color', 'black');
       score += 1;
+      console.log(score)
   };
+  flood();
+};
 
+function flood() {
   let colId = parseInt($(currentEl).attr('col-id'));
   let rowId = parseInt($(currentEl).attr('row-id'));
 //right-up
-  for (let t = rowId; t >= 0; t--) {
-    if ($(`.square[col-id='${colId}'][row-id='${t}']`).hasClass('proxCell')) break;
     for (let r = colId; r <= difficultyLookup[difficulty].xAxis; r++) {
-      if ($(`.square[col-id='${r}'][row-id='${t}']`).hasClass('proxCell')) break;
+      if ($(`.square[col-id='${r}'][row-id='${rowId}']`).hasClass('proxCell')) break;
+      for (let t = rowId; t >= 0; t--) {
+        if ($(`.square[col-id='${r}'][row-id='${t}']`).hasClass('proxCell')) break;
       checkProximity(r, t);
     }
   }
@@ -208,11 +212,11 @@ function uncoverSquare() {
 function checkProximity(colId, rowId) {
   proximity.forEach(function(coord) {
     checkProx = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
-    if ($(checkProx).hasClass('covered') || ($(checkProx).hasClass('proxCell'))) {
-      $(checkProx).addClass('uncovered').removeClass('covered').css('color', 'black');
+    if ($(checkProx).hasClass('covered')) {
+      $(checkProx).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('questioin-mark').css('color', 'black');
         score += 1;
       };
-  });
+  });``
 };
 
 function startTimer() {
@@ -227,9 +231,19 @@ function stopTimer() { //get this stop timer to work
   clearInterval(timer);
 }
 
-function toggleMask() {
-  console.log('right click on currentEl', currentEl)
+function toggleQuestionMark() {
+  if (!($(currentEl).hasClass('uncovered')) && (!($(currentEl).hasClass('flagged')))) {
+    $(currentEl).toggleClass('question-mark');
+  }
 }
+
+function toggleMask() {
+  if (!($(currentEl).hasClass('uncovered')) && (!($(currentEl).hasClass('question-mark')))) {
+    $(currentEl).toggleClass('flagged');
+  }
+};
+
+
 
 function gameCheat(event) {
   if (event.which === 192) {
@@ -243,6 +257,9 @@ function render() {
   $('#remaining-coronas').text(difficultyLookup[difficulty].coronas);
   $('#remaining-masks').text(difficultyLookup[difficulty].masks);
   $('.square > p:contains("0")').hide();
+  if (score === difficultyLookup[difficulty].winAmount) {
+    console.log('winner')
+  }
 }
 
 init();
