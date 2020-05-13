@@ -4,52 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Coronasweeper!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
     <script defer src="js/main.js"></script>
 
 </head>
 
-<body>
-    <h1>Coronasweeper</h1>
-    <hr>
-    <div class="difficulty-selector-container">
-        <h2>Difficulty level</h2>
-        <select id="difficulty-selector">
-            <option value="outbreak" selected>Outbreak</option>
-            <option value="epidemic">Epidemic</option>
-            <option value="pandemic">Pandemic</option>
-        </select>
-    </div>
-    <hr>
-    <div class="remaining-coronas-container">
-        <h2>Remaining coronas:</h2>
-        <p id="remaining-coronas">0</p>
-    </div>
-    <hr>
-    <div class="emoji-container">
-        <img id="emoji" src="img/emoji_idle.png" />
-    </div>
-    <hr>
-    <div class="timer-container">
-        <h2>Timer</h2>
-        <p id="timer">0</p>
-    </div>
-    <hr>
-    <!-- <div class="flag-container">
-        <h2>Masks left</h2>
-        <p id="remaining-masks">0</p>
-    </div>
-    <hr> -->
-    <div class="reset-container">
-        <img id="reset" src="img/reset-button.jpg" />
-    </div>
-    <hr>
+<body class="u-flex-c-ctr">
+    <header class="u-flex-c-ctr">
+        <div class="title-container">
+            <img id="title" src="img/title_idle.png" alt="Coronasweeper" />
+        </div>
+        <div class="reset-container">
+            <img id="reset" src="img/reset-button.png" />
+        </div>
+        <nav>
+            <div class="difficulty-selector-container">
+                <h2>Level:</h2>
+                <select id="difficulty-selector">
+                    <option value="outbreak" selected>Outbreak</option>
+                    <option value="epidemic">Epidemic</option>
+                    <option value="pandemic">Pandemic</option>
+                </select>
+            </div>
+            <div class="remaining-coronas-container">
+                <h2>Ronas: <div id="remaining-coronas">0</div></h2>
+            </div>
+            <div class="timer-container">
+                <h2>Timer: <div id="timer">0</div></h2>
+
+            </div>
+        </nav>
+    </header>
+    <main>
     <div class="corona-container">
-        <h2>Gameboard</h2>
         <div class="corona-field" id="corona-field">
         </div>
+    </main>
+    <footer class="u-flex-c-ctr">
+        <h3>middle click:</h3><img src="img/question-mark.png" />
+        <h3>right click:</h3><img src="img/mask.png" />
+    </footer>
 </body>
 
 </html>

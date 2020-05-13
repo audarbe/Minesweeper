@@ -4,22 +4,25 @@ const difficultyLookup = {
     xAxis: 10,
     yAxis: 10,
     coronas: 10,
+    size: '60px',
     get winAmount() { return this.xAxis * this.yAxis - this.coronas },
-    color: '#9ACD32', //yellowgreen
+    bg: 'img/bg_outbreak.jpg',
   },
   epidemic: {
     xAxis: 15,
     yAxis: 13,
     coronas: 40,
+    size: '50px',
     get winAmount() { return this.xAxis * this.yAxis - this.coronas },
-    color: '#FF8C00', //darkorange
+    bg: 'img/bg_epidemic.jpg',
   },
   pandemic: {
     xAxis: 30,
     yAxis: 16,
     coronas: 99,
+    size: '35px',
     get winAmount() { return this.xAxis * this.yAxis - this.coronas },
-    color: '#FF4500', //orangered
+    bg: 'img/bg_pandemic.jpg', //orangered
   },
 };
 
@@ -51,11 +54,11 @@ const squareEl = {
   },
 };
 
-const emoji = {
-  idle: "img/emoji_idle.png",
-  inPlay: 'img/emoji_active.png',
-  lose: 'img/emoji_lose.png',
-  win: 'img/emoji_win.png',
+const title = {
+  idle: "img/title_idle.png",
+  inPlay: 'img/title_inPlay.png',
+  lose: 'img/title_lose.png',
+  win: 'img/title_win.png',
 };
 
 const proximity = [
@@ -75,6 +78,7 @@ let board;
 let occupiedSquares;
 let currentEl;
 let score;
+let elapsedTime;
 
 /*----- cached element references -----*/
 let unoccupied = $('.square > p:contains("0")');
@@ -103,10 +107,10 @@ function createBoard() { //refactor here/change <p> to data vals
   //set up grid
   for (let y = 0; y < difficultyLookup[difficulty].yAxis; y++) {
     let newRow = $(`<div class='gameboard-row' id='row${y}'></div>`)
-    $('#corona-field').append(newRow);
+    $('#corona-field').append(newRow).fadeIn(1000);;
     for (let x = 0; x < difficultyLookup[difficulty].xAxis; x++) {
-      let newSquare = $(`<div class='square covered' id='c${x}r${y}' col-id='${x}' row-id='${y}'><p class='prox-text'>0</p></div>`)
-      $(`#row${y}`).append(newSquare);
+      let newSquare = $(`<div class='square covered' style="width:${difficultyLookup[difficulty].size}; height:${difficultyLookup[difficulty].size}" id='c${x}r${y}' col-id='${x}' row-id='${y}'><p class='prox-text'>0</p></div>`)
+      $(`#row${y}`).append(newSquare).fadeIn(1000);;
     };
   };
   board = $('.square');
@@ -134,11 +138,12 @@ function addNumbers() { //change the text to data vals
       prox = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
       let currentVal = parseInt($(prox).text()); 
         if (!($(prox).hasClass('occupied'))) {
-          $(prox).text(`${currentVal += 1}`).addClass('proxCell').css('color', 'white');
+          $(prox).html(`${currentVal += 1}`).addClass('proxCell');
         };
     });
   });
 };
+
 
 function clickHandle(event) {
   currentEl = $(event.target);
@@ -217,22 +222,22 @@ function checkProximity(colId, rowId) {
   proximity.forEach(function(coord) {
     checkProx = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
     if ($(checkProx).hasClass('covered')) {
-      $(checkProx).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('question-mark').css('color', 'black');
+      $(checkProx).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('question-mark').css('color', 'black').fadeIn(1000);;
       };
   });
 };
 
 function startTimer() { //dom stuff to render()
-  var seconds = 0;
+  elapsedTime = 0;
   timer = setInterval(function() {
-    seconds++;
-    document.getElementById("timer").textContent = seconds;
+    elapsedTime++;
+    $('#timer').text(elapsedTime);
   }, 1000);
 }
 
 function stopTimer() {
   clearInterval(timer);
-  document.getElementById("timer").textContent = 0;
+  $('#timer').text('0');
 }
 
 function toggleQuestionMark() {
@@ -257,23 +262,24 @@ function gameCheat(event) {
 function render() {
   switch (score) {
     case difficultyLookup[difficulty].winAmount:
-      $('#emoji').attr('src', emoji['win'])
+      $('#title').attr('src', title['win'])
       stopTimer();
       break;
     case -1:
       console.log('Game Over')
       $('.occupied').toggleClass('cheat');
-      $('#emoji').attr('src', emoji['lose'])
+      $('#title').attr('src', title['lose'])
       stopTimer();
       break;
     case 0:
-      $('#emoji').attr('src', emoji['idle'])
+      $('#title').attr('src', title['idle'])
       break;
     default:
-      $('#emoji').attr('src', emoji['inPlay'])
+      $('#title').attr('src', title['inPlay'])
       break;
   }
-  $('body').css('background-color', difficultyLookup[difficulty].color);
+
+  $('body').css('background', `url(${difficultyLookup[difficulty].bg}) no-repeat bottom / cover`);
   $('#remaining-coronas').text(difficultyLookup[difficulty].coronas);
   $('.square > p:contains("0")').hide(); //can get rid of this when <p> is changed to data
 }
