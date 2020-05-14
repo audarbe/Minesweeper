@@ -139,7 +139,7 @@ function addNumbers() {
 
 function clickHandle(event) {
   currentEl = $(event.target);
-  if (score === difficultyLookup[difficulty].winAmount  || score === -1) return;
+  if (score === difficultyLookup[difficulty].winAmount  || score === -1 ) return;
   switch (event.which) {
     case 3:
       toggleMask();
