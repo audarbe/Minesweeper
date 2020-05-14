@@ -101,16 +101,16 @@ h2 > div {
   background-color: white;
 }
 
-.prox-cheat {
+/* .prox-cheat {
   color: black !important;
-}
+} */
 
 .uncovered {
   background-color: lightgray;
 }
 
-.corona-container img{
-  width:30px;
+.corona-container img {
+  width: 30px;
 }
 
 .flagged {
