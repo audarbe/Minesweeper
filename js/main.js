@@ -63,7 +63,6 @@ $('#corona-field').on('contextmenu', '.square', function () { return false });
 $(window).on('keydown', gameCheat);
 
 /*----- functions -----*/
-
 function init() {
   score = 0;
   stopTimer();
