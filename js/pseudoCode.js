@@ -121,3 +121,16 @@
         --->// while id is less than the bewtween the max bounds, 
         --->//check the proximity of adjacent squares to see if it's occupied
         --->//uncover any squares that are unoccupied
+
+
+//check to see if the current cell is uncovered and
+//if it's uncovered
+//uncover it and then call the flood function to check proximity cells and 
+//while any proximity cells do not have a proximity value
+    //mark as uncovered and assign it as an origin
+    //check the next cells in the cell's proximity
+        //assign the selection of cells as the new origins
+            //f that new origin has a an available square
+
+    //if detect a proximity val or mine
+        //break

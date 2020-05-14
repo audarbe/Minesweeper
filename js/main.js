@@ -186,8 +186,6 @@ function flood() {
   console.log(score)
   render();
 };
-
-
 function checkProximity(colId, rowId) {
   proximity.forEach(function(coord) {
     checkProx = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)

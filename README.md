@@ -28,7 +28,7 @@ Coronasweeper is a different take on the most successful game ever made–Minesw
 | Action | Description |
 | ----------- | ----------- |
 | Right-Click | Place a mask on the square |
-| Middle-click | Place a question mark on the square |
+| Middle-Click | Place a question mark on the square |
 
 <br>
 
