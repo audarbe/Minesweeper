@@ -19,32 +19,10 @@ const difficultyLookup = {
   pandemic: {
     xAxis: 30,
     yAxis: 16,
+    coronas: 99,
     size: '35px',
     get winAmount() { return this.xAxis * this.yAxis - this.coronas },
     bg: 'img/bg_pandemic.jpg',
-  },
-};
-
-const squareEl = {
-  occupied: {
-    color: 'red',
-    image: 'img/corona_icon.png',
-  },
-  uncovered: {
-    color: 'lightgray',
-    image: '',
-  },
-  available: {
-    color: 'green',
-    image: '',
-  },
-  flagged: {
-    color: 'yellow',
-    image: 'img/mask.png',
-  },
-  questionMark: {
-    color: 'yellow',
-    image: 'img/question-mark.png',
   },
 };
 
@@ -130,7 +108,7 @@ function addNumbers() {
       prox = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
       let currentVal = parseInt($(prox).text()); 
         if (!($(prox).hasClass('occupied'))) {
-          $(prox).html(`${currentVal += 1}`).addClass('proxCell').attr('color', 'white');
+          $(prox).html(`${currentVal += 1}`).addClass('proxCell');
         };
     });
   });
@@ -138,7 +116,7 @@ function addNumbers() {
 
 function clickHandle(event) {
   currentEl = $(event.target);
-  if (score === difficultyLookup[difficulty].winAmount  || score === -1) return;
+  if (score === difficultyLookup[difficulty].winAmount || score === -1) return;
   switch (event.which) {
     case 3:
       toggleMask();
@@ -164,7 +142,7 @@ function clickHandle(event) {
 
 function uncoverSquare() {
   if ($(currentEl).hasClass('covered')) {
-    $(currentEl).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('question-mark').css('color', 'black');
+    $(currentEl).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('question-mark');
   };
   flood();
 };
@@ -214,8 +192,8 @@ function checkProximity(colId, rowId) {
   proximity.forEach(function(coord) {
     checkProx = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
     if ($(checkProx).hasClass('covered')) {
-      $(checkProx).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('question-mark').css('color', 'black');
-      };
+      $(checkProx).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('question-mark');
+    };
   });
 };
 
@@ -233,21 +211,20 @@ function stopTimer() {
 }
 
 function toggleQuestionMark() {
-  if (!($(currentEl).hasClass('uncovered')) && (!($(currentEl).hasClass('flagged'))) && (!($(currentEl).hasClass('occupied')))) {
+  if (!($(currentEl).hasClass('uncovered')) && (!($(currentEl).hasClass('flagged')))) {
     $(currentEl).toggleClass('question-mark');
   }
 }
 
 function toggleMask() {
-  if (!($(currentEl).hasClass('uncovered')) && (!($(currentEl).hasClass('question-mark'))) && (!($(currentEl).hasClass('occupied')))) {
+  if (!($(currentEl).hasClass('uncovered')) && (!($(currentEl).hasClass('question-mark')))) {
     $(currentEl).toggleClass('flagged');
   }
 };
 
 function gameCheat(event) {
-  if (event.which === 192) {
-    $('.occupied').toggleClass('cheat');
-    $('.proxCell').toggleClass('prox-cheat');
+  if (event.which === 192 || score != -1 || score < difficultyLookup[difficulty].winAmount) {
+    $('.occupied').toggleClass('expose');
   }   
 }
 
@@ -258,8 +235,9 @@ function render() {
       stopTimer();
       break;
     case -1:
-      console.log('Game Over')
-      $('.occupied').addClass('cheat');
+      $('.occupied').addClass('expose');
+      $('.flagged').removeClass('flagged');
+      $('.question-mark').removeClass('question-mark');
       $('#title').attr('src', title['lose'])
       stopTimer();
       break;

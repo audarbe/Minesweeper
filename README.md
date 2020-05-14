@@ -10,9 +10,9 @@ Coronasweeper is a different take on the most successful game ever made–Minesw
 
 **Levels:**
 
-- **Outbreak**: 10x10 grid | 10 Ronas | 90 Squares to win
-- **Epidemic**: 15 x 13 grid | 40 Ronas | 155 Squares to win
-- **Pandemic**: 30 x 16 grid | 99 Ronas | 381 Squares to win
+- **Outbreak**: 10x10 grid | 10 Ronas | Uncover 90 Squares to win
+- **Epidemic**: 15 x 13 grid | 40 Ronas | Uncover 155 Squares to win
+- **Pandemic**: 30 x 16 grid | 99 Ronas | Uncover 381 Squares to win
 
 <br>
 
@@ -29,7 +29,6 @@ Coronasweeper is a different take on the most successful game ever made–Minesw
 | ----------- | ----------- |
 | Right-Click | Place a mask on the square |
 | Middle-click | Place a question mark on the square |
-| ` Key (back tick) | Expose the cells, if you're a cheater |
 
 <br>
 

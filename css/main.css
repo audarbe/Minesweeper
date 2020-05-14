@@ -17,7 +17,6 @@ body {
   background-size: cover;
   height: 100vh;
   transition: all .3s;
-  color: white;
   font-family: 'Luckiest Guy', cursive;
 }
 
@@ -85,32 +84,29 @@ h2 > div {
 }
 
 .square {
-  transition: all .3s;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
   background-color: white;
   border-radius: 5px;
   margin: 2px;
   font-size: 1.75em;
   padding-top: 6px;
+  -webkit-user-select:none; 
+  -webkit-touch-callout:none; 
+  -moz-user-select:none; 
+  -ms-user-select:none; 
+  user-select:none;  
 }
-
-.cheat {
-  background: url("../img/corona_icon.png") no-repeat center / contain;
-  background-color: white;
-}
-
-/* .prox-cheat {
-  color: black !important;
-} */
 
 .uncovered {
-  background-color: lightgray;
+  background-color: rgba(255, 255, 255, .5);
 }
 
-.corona-container img {
-  width: 30px;
+.expose {
+  background: url("../img/corona_icon.png") no-repeat center / contain;
+  background-color: white;
 }
 
 .flagged {
@@ -134,7 +130,6 @@ footer {
 
 h3 {
   font-size: 1.75em;
-  /* margin: 0 10px 0 25px; */
   padding-top: 5px;
 }
 
