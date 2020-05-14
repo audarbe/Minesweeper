@@ -136,7 +136,6 @@ function addNumbers() {
   });
 };
 
-
 function clickHandle(event) {
   currentEl = $(event.target);
   if (score === difficultyLookup[difficulty].winAmount  || score === -1) return;
@@ -162,7 +161,6 @@ function clickHandle(event) {
       break;
     }
 }
-
 
 function uncoverSquare() {
   if ($(currentEl).hasClass('covered')) {
@@ -210,6 +208,7 @@ function flood() {
   console.log(score)
   render();
 };
+
 
 function checkProximity(colId, rowId) {
   proximity.forEach(function(coord) {
@@ -260,7 +259,7 @@ function render() {
       break;
     case -1:
       console.log('Game Over')
-      $('.occupied').toggleClass('cheat');
+      $('.occupied').addClass('cheat');
       $('#title').attr('src', title['lose'])
       stopTimer();
       break;
