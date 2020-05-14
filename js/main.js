@@ -22,7 +22,7 @@ const difficultyLookup = {
     coronas: 99,
     size: '35px',
     get winAmount() { return this.xAxis * this.yAxis - this.coronas },
-    bg: 'img/bg_pandemic.jpg', //orangered
+    bg: 'img/bg_pandemic.jpg',
   },
 };
 
@@ -96,10 +96,8 @@ function init() {
 };
 
 function createBoard() {
-  //clear board
   occupiedSquares = [];
   $('.corona-field > div').remove();
-  //set up grid
   for (let y = 0; y < difficultyLookup[difficulty].yAxis; y++) {
     let newRow = $(`<div class='gameboard-row' id='row${y}'></div>`)
     $('#corona-field').append(newRow);
@@ -142,7 +140,7 @@ function addNumbers() {
 
 function clickHandle(event) {
   currentEl = $(event.target);
-  if (score === difficultyLookup[difficulty].winAmount  || score === -1 ) return;
+  if (score === difficultyLookup[difficulty].winAmount  || score === -1) return;
   switch (event.which) {
     case 3:
       toggleMask();
@@ -174,7 +172,7 @@ function uncoverSquare() {
   flood();
 };
 
-function flood() { //fix logic and refactor
+function flood() {
   let colId = parseInt($(currentEl).attr('col-id'));
   let rowId = parseInt($(currentEl).attr('row-id'));
 //right-up
@@ -223,7 +221,7 @@ function checkProximity(colId, rowId) {
   });
 };
 
-function startTimer() { //move dom stuff to render()
+function startTimer() {
   elapsedTime = 0;
   timer = setInterval(function() {
     elapsedTime++;
