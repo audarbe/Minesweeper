@@ -17,6 +17,8 @@ const difficultyLookup = {
     bg: 'img/bg_epidemic.jpg',
   },
   pandemic: {
+    xAxis: 30,
+    yAxis: 16,
     size: '35px',
     get winAmount() { return this.xAxis * this.yAxis - this.coronas },
     bg: 'img/bg_pandemic.jpg',
