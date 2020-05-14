@@ -10,8 +10,8 @@
     ---> // Background color reference
     ---> // Number of mines placed
     ---> // Score needed to win
-    // Declare a object with the states of our squares
-    // Occupied by mines
+    xx// Declare a object with the states of our squares
+    xx// Occupied by mines
     ---> // color/Image reference
     // We will use the index of the a square based on how our difficulty to occupy a square with a mine.
     // Place the indexes into an array and assign to variable of mines.
@@ -33,7 +33,7 @@
     ---> //  Lose
     ---> //  win
     ---> // Instantiate our winner accumulator variable to zero.
-    // Intantate our game board
+    --->// Intantate our game board
     ---> //Instantiate difficulty
 
     --->// Create any cached element references
@@ -99,11 +99,11 @@
 --->//send win parameter to our render function.
 
 // Create our Render function
-    // Audio
-        // When user click on uncovered square
-        // Uncovering adjacent squares
-        // Game start
-        // Game end
+    XX// Audio
+        XX// When user click on uncovered square
+        XX// Uncovering adjacent squares
+        XX// Game start
+        XX// Game end
         --->// Display
         --->// While game is playing, show normal emoji guy
         --->// If argument is win, change emoji to sunglasses guy
@@ -123,14 +123,15 @@
         --->//uncover any squares that are unoccupied
 
 
-//check to see if the current cell is uncovered and
-//if it's uncovered
-//uncover it and then call the flood function to check proximity cells and 
-//while any proximity cells do not have a proximity value
-    //mark as uncovered and assign it as an origin
-    //check the next cells in the cell's proximity
-        //assign the selection of cells as the new origins
-            //f that new origin has a an available square
+        --->//while loop for flood
+        --->//check to see if the current cell is uncovered and
+        --->//if it's uncovered
+        --->//uncover it and then call the flood function to check proximity cells and 
+        --->//while origin in within the gameboard AND do not have a prox number and not a mine
+        --->//mark as uncovered and assign it as an origin
+        --->//check the next cells in the cell's proximity
+        --->//assign the selection of cells as the new origins
+        --->//run flood again
 
     //if detect a proximity val or mine
         //break

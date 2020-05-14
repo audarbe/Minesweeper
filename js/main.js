@@ -141,56 +141,32 @@ function clickHandle(event) {
 }
 
 function uncoverSquare() {
-  if ($(currentEl).hasClass('covered')) {
+  if (($(currentEl).hasClass('covered')) && !($(currentEl).hasClass('proxCell'))) {
+    $(currentEl).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('question-mark');
+    flood(currentEl);
+  } else if (($(currentEl).hasClass('covered')) && ($(currentEl).hasClass('proxCell'))) {
     $(currentEl).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('question-mark');
   };
-  flood();
-};
-
-function flood() {
-  let colId = parseInt($(currentEl).attr('col-id'));
-  let rowId = parseInt($(currentEl).attr('row-id'));
-//right-up
-    for (let r = colId; r <= difficultyLookup[difficulty].xAxis; r++) {
-      if ($(`.square[col-id='${r}'][row-id='${rowId}']`).hasClass('proxCell')) break;
-      for (let t = rowId; t >= 0; t--) {
-        if ($(`.square[col-id='${r}'][row-id='${t}']`).hasClass('proxCell')) break;
-      checkProximity(r, t);
-    }
-  }
-//right-down
-  for (let r = colId; r <= difficultyLookup[difficulty].xAxis; r++) {
-    if ($(`.square[col-id='${r}'][row-id='${rowId}']`).hasClass('proxCell')) break;
-    for (let b = rowId; b <= difficultyLookup[difficulty].yAxis; b++) {
-      if ($(`.square[col-id='${r}'][row-id='${b}']`).hasClass('proxCell')) break;
-      checkProximity(r, b);
-    }
-  }
-//left-down
-  for (let l = colId; l >= 0; l--) {
-    if ($(`.square[col-id='${l}'][row-id='${rowId}']`).hasClass('proxCell')) break;
-    for (let b = rowId; b <= difficultyLookup[difficulty].yAxis; b++) {
-      if ($(`.square[col-id='${l}'][row-id='${b}']`).hasClass('proxCell')) break;
-      checkProximity(l, b);
-    }
-  }   
-//left-top
-  for (let l = colId; l >= 0; l--) {
-    if ($(`.square[col-id='${l}'][row-id='${rowId}']`).hasClass('proxCell')) break;
-    for (let t = rowId; t >= 0; t--) {
-      if ($(`.square[col-id='${l}'][row-id='${t}']`).hasClass('proxCell')) break;
-      checkProximity(l, t);
-    }
-  }
   score = $('.uncovered').length;
-  console.log(score)
   render();
 };
-function checkProximity(colId, rowId) {
+
+function flood(origin) {
+  let colId = parseInt($(origin).attr('col-id'));
+  let rowId = parseInt($(origin).attr('row-id'));
+  checkProx = $(`.square[col-id='${colId}'][row-id='${rowId}']`)
   proximity.forEach(function(coord) {
     checkProx = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
     if ($(checkProx).hasClass('covered')) {
       $(checkProx).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('question-mark');
+      checkProx = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
+      while (
+        (parseInt($(checkProx).attr("col-id")) >= 0 && parseInt($(checkProx).attr("col-id")) <= difficultyLookup[difficulty].xAxis) &&
+        (parseInt($(checkProx).attr("row-id")) >= 0 && parseInt($(checkProx).attr("row-id")) <= difficultyLookup[difficulty].yAxis) &&
+        !($(checkProx).hasClass('occupied')) && !($(checkProx).hasClass('proxCell'))
+      ) { 
+        flood(checkProx)
+      };
     };
   });
 };
