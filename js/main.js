@@ -4,7 +4,7 @@ const difficultyLookup = {
     xAxis: 10,
     yAxis: 10,
     coronas: 10,
-    size: '60px',
+    size: '55px',
     get winAmount() { return this.xAxis * this.yAxis - this.coronas },
     bg: 'img/bg_outbreak.jpg',
   },
@@ -12,7 +12,7 @@ const difficultyLookup = {
     xAxis: 15,
     yAxis: 13,
     coronas: 40,
-    size: '50px',
+    size: '45px',
     get winAmount() { return this.xAxis * this.yAxis - this.coronas },
     bg: 'img/bg_epidemic.jpg',
   },
@@ -27,27 +27,22 @@ const squareEl = {
   occupied: {
     color: 'red',
     image: 'img/corona_icon.png',
-    audio: '',
   },
   uncovered: {
     color: 'lightgray',
     image: '',
-    audio: '',
   },
   available: {
     color: 'green',
     image: '',
-    audio: '',
   },
   flagged: {
     color: 'yellow',
     image: 'img/mask.png',
-    audio: '',
   },
   questionMark: {
     color: 'yellow',
     image: 'img/question-mark.png',
-    audio: '',
   },
 };
 
@@ -97,17 +92,17 @@ function init() {
   render();
 };
 
-function createBoard() { //refactor here/change <p> to data vals
+function createBoard() {
   //clear board
   occupiedSquares = [];
   $('.corona-field > div').remove();
   //set up grid
   for (let y = 0; y < difficultyLookup[difficulty].yAxis; y++) {
     let newRow = $(`<div class='gameboard-row' id='row${y}'></div>`)
-    $('#corona-field').append(newRow).fadeIn(1000);;
+    $('#corona-field').append(newRow);
     for (let x = 0; x < difficultyLookup[difficulty].xAxis; x++) {
       let newSquare = $(`<div class='square covered' style="width:${difficultyLookup[difficulty].size}; height:${difficultyLookup[difficulty].size}" id='c${x}r${y}' col-id='${x}' row-id='${y}'><p class='prox-text'>0</p></div>`)
-      $(`#row${y}`).append(newSquare).fadeIn(1000);;
+      $(`#row${y}`).append(newSquare);
     };
   };
   board = $('.square');
@@ -127,7 +122,7 @@ function plantCoronas() {
   addNumbers();
 };
 
-function addNumbers() { //change the text to data vals
+function addNumbers() {
   proximity.forEach(function(coord) {
     occupiedSquares.forEach(function(occupiedSquare) {
       let colId = parseInt($(occupiedSquare).attr('col-id'));
@@ -135,7 +130,7 @@ function addNumbers() { //change the text to data vals
       prox = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
       let currentVal = parseInt($(prox).text()); 
         if (!($(prox).hasClass('occupied'))) {
-          $(prox).html(`${currentVal += 1}`).addClass('proxCell');
+          $(prox).html(`${currentVal += 1}`).addClass('proxCell').attr('color', 'white');
         };
     });
   });
@@ -144,7 +139,7 @@ function addNumbers() { //change the text to data vals
 
 function clickHandle(event) {
   currentEl = $(event.target);
-  if (score === difficultyLookup[difficulty].winAmount) return;
+  if (score === difficultyLookup[difficulty].winAmount  || score === -1) return;
   switch (event.which) {
     case 3:
       toggleMask();
@@ -167,6 +162,7 @@ function clickHandle(event) {
       break;
     }
 }
+
 
 function uncoverSquare() {
   if ($(currentEl).hasClass('covered')) {
@@ -219,12 +215,12 @@ function checkProximity(colId, rowId) {
   proximity.forEach(function(coord) {
     checkProx = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
     if ($(checkProx).hasClass('covered')) {
-      $(checkProx).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('question-mark').css('color', 'black').fadeIn(1000);;
+      $(checkProx).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('question-mark').css('color', 'black');
       };
   });
 };
 
-function startTimer() { //dom stuff to render()
+function startTimer() { //move dom stuff to render()
   elapsedTime = 0;
   timer = setInterval(function() {
     elapsedTime++;
@@ -278,7 +274,7 @@ function render() {
 
   $('body').css('background', `url(${difficultyLookup[difficulty].bg}) no-repeat bottom / cover`);
   $('#remaining-coronas').text(difficultyLookup[difficulty].coronas);
-  $('.square > p:contains("0")').hide(); //can get rid of this when <p> is changed to data
+  $('.square > p:contains("0")').hide();
 }
 
 init();
