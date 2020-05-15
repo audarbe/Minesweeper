@@ -62,9 +62,9 @@ $(window).on('keydown', gameCheat);
 function init() {
   difficulty = $('#difficulty-selector').val();
   score = 0;
-  stopTimer();
   createBoard();
   render();
+  stopTimer();
 };
 
 function createBoard() {
@@ -85,18 +85,18 @@ function plantCoronas() {
   while (occupiedSquares.length < difficultyLookup[difficulty].coronas) {
     let xRan = Math.floor((Math.random() * (difficultyLookup[difficulty].xAxis - 0) + 0));
     let yRan = Math.floor((Math.random() * (difficultyLookup[difficulty].yAxis - 0) + 0));
-    let $occupiedSquare = $(`#c${xRan}r${yRan}`);
-    if (!($occupiedSquare.hasClass('occupied'))) {
-      $occupiedSquare.addClass('occupied').removeClass('covered');
-      occupiedSquares.push($occupiedSquare);
+    let occupiedSquare = $(`#c${xRan}r${yRan}`);
+    if (!($(occupiedSquare).hasClass('occupied'))) {
+      $(occupiedSquare).addClass('occupied').removeClass('covered');
+      occupiedSquares.push(occupiedSquare);
     };      
   }
   addNumbers();
 };
 
 function addNumbers() {
-  proximity.forEach(function(coord) {
-    occupiedSquares.forEach(function(occupiedSquare) {
+  occupiedSquares.forEach(function(occupiedSquare) {
+    proximity.forEach(function(coord) {
       let colId = parseInt($(occupiedSquare).attr('col-id'));
       let rowId = parseInt($(occupiedSquare).attr('row-id'));
       prox = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
