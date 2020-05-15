@@ -1,48 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/x-icon" href="img/corona_icon.png">
-    <title>Coronasweeper!</title>
-    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/main.css">
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
-    <script defer src="js/main.js"></script>
-</head>
-<body class="u-flex-c-ctr">
-    <header class="u-flex-c-ctr">
-        <div class="title-container">
-            <img id="title" src="img/title_idle.png" alt="Coronasweeper" />
-        </div>
-        <div class="reset-container">
-            <img id="reset" src="img/reset-button.png" />
-        </div>
-        <nav>
-            <div class="difficulty-selector-container">
-                <h2>Level:</h2>
-                <select id="difficulty-selector">
-                    <option value="outbreak" selected>Outbreak</option>
-                    <option value="epidemic">Epidemic</option>
-                    <option value="pandemic">Pandemic</option>
-                </select>
-            </div>
-            <div class="remaining-coronas-container">
-                <h2>Ronas: <div id="remaining-coronas">0</div></h2>
-            </div>
-            <div class="timer-container">
-                <h2>Timer: <div id="timer">0</div></h2>
-            </div>
-        </nav>
-    </header>
-    <main>
-    <div class="corona-container">
-        <div class="corona-field" id="corona-field">
-        </div>
-    </main>
-    <footer class="u-flex-c-ctr">
-        <h3>middle click:</h3><img src="img/question-mark.png" />
-        <h3>right click:</h3><img src="img/mask.png" />
-    </footer>
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/x-icon" href="img/corona_icon.png">
+  <title>Coronasweeper!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+  <script defer src="js/main.js"></script>
+  </head>
+  <body class="u-flex-c-ctr">
+  <header class="u-flex-c-ctr">
+      <div class="title-container">
+          <img id="title" src="img/title_idle.png" alt="Coronasweeper" />
+      </div>
+      <div class="reset-container">
+          <img id="reset" src="img/reset-button.png" />
+      </div>
+      <nav>
+          <div class="difficulty-selector-container">
+              <h2>Level:</h2>
+              <select id="difficulty-selector">
+                  <option value="outbreak" selected>Outbreak</option>
+                  <option value="epidemic">Epidemic</option>
+                  <option value="pandemic">Pandemic</option>
+              </select>
+          </div>
+          <div class="remaining-coronas-container">
+              <h2>Ronas: <div id="remaining-coronas">0</div></h2>
+          </div>
+          <div class="timer-container">
+              <h2>Timer: <div id="timer">0</div></h2>
+          </div>
+      </nav>
+  </header>
+  <main>
+  <div class="corona-container">
+      <div class="corona-field" id="corona-field" />
+  </main>
+  <footer class="u-flex-c-ctr">
+      <h3>middle click:</h3><img src="img/question-mark.png" />
+      <h3>right click:</h3><img src="img/mask.png" />
+  </footer>
 </body>
-</html>
+</html> 

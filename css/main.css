@@ -93,11 +93,11 @@ h2 > div {
   margin: 2px;
   font-size: 1.75em;
   padding-top: 6px;
-  -webkit-user-select:none; 
-  -webkit-touch-callout:none; 
-  -moz-user-select:none; 
-  -ms-user-select:none; 
-  user-select:none;  
+  -webkit-user-select: none; 
+  -webkit-touch-callout: none; 
+  -moz-user-select: none; 
+  -ms-user-select: none; 
+  user-select: none;  
 }
 
 .uncovered {

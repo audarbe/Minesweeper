@@ -46,14 +46,10 @@ const proximity = [
 
 /*----- app's state (variables) -----*/
 let difficulty;
-let board;
 let occupiedSquares;
 let currentEl;
 let score;
 let elapsedTime;
-
-/*----- cached element references -----*/
-let unoccupied = $('.square > p:contains("0")');
 
 /*----- event listeners -----*/
 $('#difficulty-selector').change(init);
@@ -64,9 +60,9 @@ $(window).on('keydown', gameCheat);
 
 /*----- functions -----*/
 function init() {
+  difficulty = $('#difficulty-selector').val();
   score = 0;
   stopTimer();
-  difficulty = $('#difficulty-selector').val();
   createBoard();
   render();
 };
@@ -82,7 +78,6 @@ function createBoard() {
       $(`#row${y}`).append(newSquare);
     };
   };
-  board = $('.square');
   plantCoronas();
 };
 
@@ -108,10 +103,11 @@ function addNumbers() {
       let currentVal = parseInt($(prox).text()); 
         if (!($(prox).hasClass('occupied'))) {
           $(prox).html(`${currentVal += 1}`).addClass('proxCell');
-        };
+        }
+        });
     });
-  });
-};
+    $('.square > p:contains("0")').hide();
+  };
 
 function clickHandle(event) {
   currentEl = $(event.target);
@@ -140,31 +136,27 @@ function clickHandle(event) {
 }
 
 function uncoverSquare() {
-  if (($(currentEl).hasClass('covered')) && !($(currentEl).hasClass('proxCell'))) {
+  if (($(currentEl).hasClass('covered'))) {
     $(currentEl).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('question-mark');
-    flood(currentEl);
-  } else if (($(currentEl).hasClass('covered')) && ($(currentEl).hasClass('proxCell'))) {
-    $(currentEl).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('question-mark');
-  };
-  score = $('.uncovered').length;
-  render();
+    if (!($(currentEl).hasClass('proxCell'))) flood(currentEl);
+    score = $('.uncovered').length;
+    render();
+  }
 };
 
 function flood(origin) {
   let colId = parseInt($(origin).attr('col-id'));
   let rowId = parseInt($(origin).attr('row-id'));
-  checkProx = $(`.square[col-id='${colId}'][row-id='${rowId}']`)
   proximity.forEach(function(coord) {
     checkProx = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
     if ($(checkProx).hasClass('covered')) {
       $(checkProx).addClass('uncovered').removeClass('covered').removeClass('flagged').removeClass('question-mark');
-      checkProx = $(`.square[col-id='${colId + coord[0]}'][row-id='${rowId + coord[1]}']`)
       while (
         (parseInt($(checkProx).attr("col-id")) >= 0 && parseInt($(checkProx).attr("col-id")) <= difficultyLookup[difficulty].xAxis) &&
         (parseInt($(checkProx).attr("row-id")) >= 0 && parseInt($(checkProx).attr("row-id")) <= difficultyLookup[difficulty].yAxis) &&
         !($(checkProx).hasClass('occupied')) && !($(checkProx).hasClass('proxCell'))
-      ) { 
-        flood(checkProx)
+      ){ 
+      flood(checkProx);
       };
     };
   });
@@ -224,7 +216,6 @@ function render() {
 
   $('body').css('background', `url(${difficultyLookup[difficulty].bg}) no-repeat bottom / cover`);
   $('#remaining-coronas').text(difficultyLookup[difficulty].coronas);
-  $('.square > p:contains("0")').hide();
 }
 
 init();
