@@ -188,7 +188,7 @@ function toggleMask() {
 };
 
 function gameCheat(event) {
-  if (event.which === 192 || score != -1 || score < difficultyLookup[difficulty].winAmount) {
+  if (event.which === 192 && score != -1 && score < difficultyLookup[difficulty].winAmount) {
     $('.occupied').toggleClass('expose');
   }   
 }
