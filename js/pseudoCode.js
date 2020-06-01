@@ -1,137 +1,94 @@
-//***************************************
-// pseudocode - Last Revision - 050820
-//***************************************
-
-
 // Determine the constants for the game
----> // Declare a variable with an object of difficulty levels and any objects we’ll need
-    ---> // Squares on x-axis
-    ---> // Squares on y-axis
-    ---> // Background color reference
-    ---> // Number of mines placed
-    ---> // Score needed to win
-    xx// Declare a object with the states of our squares
-    xx// Occupied by mines
-    ---> // color/Image reference
+    // Declare a variable with an object of difficulty levels and any objects we'll need
+        // Squares on x-axis
+        // Squares on y-axis
+        // Background color reference
+        // Number of mines placed
+        // Score needed to win
+    // Declare a object with the states of our squares
+        // Occupied by mines
+        // color/Image reference
     // We will use the index of the a square based on how our difficulty to occupy a square with a mine.
-    // Place the indexes into an array and assign to variable of mines.
-    ---> //Uncovered State
-    ---> // Color reference
-    ---> // Covered State
-    ---> /// Color reference
-    ---> // Create an object for the different states of our emoji guy
-    ---> // Normal
-    ---> // Active
-    ---> // Lose
-    ---> // Win
-    ---> //  Create an object for audio clips
-    ---> //  Uncover square
-    ---> //  Click
-    ---> //  Adjacent squares
-    ---> //  Game start
-    ---> //  Game reset
-    ---> //  Lose
-    ---> //  win
-    ---> // Instantiate our winner accumulator variable to zero.
-    --->// Intantate our game board
-    ---> //Instantiate difficulty
-
-    --->// Create any cached element references
-    --->// Emoji element for our “messaging”
-    --->// Body for background image changing
-
-    // Establish any event listeners
-    ---> // Create an event listener for our squares
-    --->// Will be used for our square actions and timer
-    ---> // Also will invoke our handleClick function
-    ---> // Create an event listener for our difficulty selector
-    ---> //Create an event listener for our flag
-    XX--// button in nav
-// Right click on square
----> // Create an event listener for our reset button
-    ---> //  Create event listener for “cheat code”
-    XX// Sequence of keypresses
-
+        // Place the indexes into an array and assign to variable of mines.
+            //Uncovered State
+            // Color reference
+            // Covered State
+            /// Color reference
+    // Create an object for the different states of our emoji guy
+        // Normal
+        // Active
+        // Lose
+        // Win
+    //  Create an object for audio clips
+        //  Uncover square
+        //  Click
+        //  Adjacent squares
+        //  Game start
+        //  Game reset
+        //  Lose
+        //  win
+    // Instantiate our winner accumulator variable to zero.
+    // Instantiate our game board
+    //Instantiate difficulty
+// Create any cached element references
+    // Emoji element for our "messaging"
+    // Body for background image changing
+// Establish any event listeners
+    // Create an event listener for our squares
+    // Will be used for our square actions and timer
+    // Also will invoke our handleClick function
+    // Create an event listener for our difficulty selector
+    //Create an event listener for our flag
+        // button in nav
+    // Right click on square
+    // Create an event listener for our reset button
+    //  Create event listener for "cheat code"
+        // Sequence of keypresses
 // Create our Initialization function
----> // Create our board
-    ---> // Reference our difficulty object for our game board information
-    ---> // Append elements to the DOM to create board
-    ---> // Set difficulty to spicy (default)
-    --->// Reset our timer and and a click event to start
-
-
-    ---> // create random landmines function
-    ---> //add isolate random squares    
-    ---> //find random number along x-axis
-    ---> //ind random number along y-axis
-    ---> //oncatenate randX and randY to find ID of current square
-    ---> //push random square to occupied array for later use
-
+    // Create our board
+        // Reference our difficulty object for our game board information
+        // Append elements to the DOM to create board
+        // Set difficulty to spicy (default)
+        // Reset our timer and and a click event to start
+// create random landmines function
+     //add isolate random squares    
+     //find random number along x-axis
+     //find random number along y-axis
+     //concatenate randX and randY to find ID of current square
+     //push random square to occupied array for later use
 // Create our handle click function
---->// If click on square
---->    //invoke win-logic function
---->// If current index is not occupied by a mine, 
---->    //invoke uncoverSquares functions 
---->// Clicks on flag icon or right clicks on a square element, invoke our flag function
---->// When game starts, change the emoji guy to our ‘normal’ state to render
-    XX// When user clicks on an square, send active state to render function
-
+// If click on square
+    //invoke win-logic function
+// If current index is not occupied by a mine, 
+    //invoke uncoverSquares functions 
+// Clicks on flag icon or right clicks on a square element, invoke our flag function
+// When game starts, change the emoji guy to our 'normal' state to render
+    // When user clicks on an square, send active state to render function
 // Distribute mines on first click?
-
---->// Add Middle-click functionaltiy
---->//add question mark
-
---->// Create uncoversquares function
---->// Check to see if adjacent squares are empty (check in the following pattern:
---->// Top, top-right, right, bottom-right, bottom, bottom-left, left, top-left
----> // While adjacent squares are empty
---->// Check next set of adjacent squares
---->// If the adjacent square is occupied by a mine
---->// Place the number of elements that have a mine in the uncovered element
---->// Add number of uncovered squares to our winner accumulator value.
-
---->// Create our flagging function
---->// right click allows the user to place a flag
-
---->// Create our win-logic function
---->// If the current index matches anything in our occupied mines array.
---->// If winner is === to minimum based on difficulty,
---->//send win parameter to our render function.
-
+// Add Middle-click functionality
+    //add question mark
+// Create uncoversquares function
+    // Check to see if adjacent squares are empty (check in the following pattern:
+    // Top, top-right, right, bottom-right, bottom, bottom-left, left, top-left
+        // While adjacent squares are empty
+            // Check next set of adjacent squares
+            // If the adjacent square is occupied by a mine
+            // Place the number of elements that have a mine in the uncovered element
+        // Add number of uncovered squares to our winner accumulator value.
+// Create our flagging function
+    // right click allows the user to place a flag
+// Create our win-logic function
+    // If the current index matches anything in our occupied mines array.
+    // If winner is === to minimum based on difficulty,
+    //send win parameter to our render function.
 // Create our Render function
-    XX// Audio
-        XX// When user click on uncovered square
-        XX// Uncovering adjacent squares
-        XX// Game start
-        XX// Game end
-        --->// Display
-        --->// While game is playing, show normal emoji guy
-        --->// If argument is win, change emoji to sunglasses guy
-        --->// If argument is active, change emoji to shocked guy
-        --->// If argument is lose, change emoji to x-eyes guy
-
-
-
-        --->//check to see if this square has a corona
-        --->//if occupied
-        --->//game ends
-        --->//otherwise
-        --->// if current cell is unoccupied
-        --->//uncover current square
-        --->// while id is less than the bewtween the max bounds, 
-        --->//check the proximity of adjacent squares to see if it's occupied
-        --->//uncover any squares that are unoccupied
-
-
-        --->//while loop for flood
-        --->//check to see if the current cell is uncovered and
-        --->//if it's uncovered
-        --->//uncover it and then call the flood function to check proximity cells and 
-        --->//while origin in within the gameboard AND do not have a prox number and not a mine
-        --->//mark as uncovered and assign it as an origin
-        --->//check the next cells in the cell's proximity
-        --->//assign the selection of cells as the new origins
-        --->//run flood again
-
-    //if detect a proximity val or mine
-        //break
+    // Audio
+        // When user click on uncovered square
+        // Uncovering adjacent squares
+        // Game start
+        // Game end
+    // Display
+        // While game is playing, show normal emoji guy
+        // If argument is win, change emoji to sunglasses guy
+        // If argument is active, change emoji to shocked guy
+        // If argument is lose, change emoji to x-eyes guy
